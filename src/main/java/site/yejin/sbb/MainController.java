@@ -192,5 +192,26 @@ public class MainController {
     }*/
 
 
+    @GetMapping("/saveSessionAge")
+    @ResponseBody
+    public String showSaveSessionAge(int age, HttpServletRequest req) {
+        HttpSession session = req.getSession();
+        System.out.println("session : "+session);
+
+        session.setAttribute("age",age);
+
+        return String.valueOf(age);
+    }
+
+    @GetMapping("getSessionAge")
+    @ResponseBody
+    public String showGetSessionAge(HttpServletRequest req){
+
+        HttpSession session=req.getSession();
+        int age = (int)session.getAttribute("age");
+        return """
+                <h1>age : %d</h1>
+                """.formatted(age);
+    }
 
 }
