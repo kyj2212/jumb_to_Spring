@@ -4,6 +4,11 @@ package site.yejin.sbb;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 @Controller
 public class MainController {
 
@@ -94,6 +99,72 @@ public class MainController {
                 """.formatted(num);
     }
 
+    @GetMapping("/gugudanfor")
+    @ResponseBody
+    public String showGugudanFor(int dan, int limit) {
+
+        StringBuilder str=new StringBuilder();
+        for (int i = 1; i <=limit ; i++) {
+            int r=dan*i;
+            str.append("""
+                <p>%d * %d = %d</p>
+                """.formatted(dan,i,r));
+
+        }
+        return str.toString();
+    }
+
+    @GetMapping("/gugudan")
+    @ResponseBody
+    public String showGugudanStream(Integer dan, Integer limit) {
+
+        if(dan==null)
+            dan=4;
+        if(limit==null)
+            limit=9;
+
+        Integer finalDan= dan;
+
+        return IntStream.rangeClosed(1,limit)
+                .mapToObj(i-> "%d * %d = %d".formatted(finalDan,i,finalDan*i))
+                .collect(Collectors.joining("<br>\n"));
+
+
+    }
+
+    @GetMapping("/mbti")
+    @ResponseBody
+    public String showGugudan(String name) {
+
+        return switch (name){
+            case "홍길순" -> "INFP";
+            case "임꺽정"-> "ENFP";
+            case "홍길동" -> {
+                char j = 'J';
+                yield "INF" + j;
+            }
+            case "김예진","김김김" -> "ESTJ";
+            default -> "모름";
+        };
+
+/*        switch (name){
+            case "홍길동" :
+                return "<h1>INFP</h1>";
+
+            case "홍길순" :
+                return "<h1>ENFP</h1>";
+
+            case "임꺽정" :
+                return "<h1>INFJ</h1>";
+
+            case "김예진" :
+                return "<h1>ESTJ</h1>";
+
+
+        }
+        return "<h1>없음</h1>";*/
+    }
+
 /*    @GetMapping("/page1")
     @ResponseBody
     public String showPage1(){
@@ -119,5 +190,7 @@ public class MainController {
                 <h1>POST 방식으로 넘어옴</h1>
                 """;
     }*/
+
+
 
 }
