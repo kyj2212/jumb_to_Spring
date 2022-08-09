@@ -308,6 +308,39 @@ public class MainController {
     }
 
 
+
+/*
+    private List<Person> people = new ArrayList<>(
+            Arrays.asList(
+                    new Person(27,"예진1"),
+                    new Person(27, "예진2"))
+    );
+
+*/
+    private List<Person> people = new ArrayList<>();
+    @GetMapping("/addPerson")
+    @ResponseBody
+    public String addPerson(@ModelAttribute("p") Person p) {
+        System.out.println(p);
+        people.add(p);
+        return """
+                %d번 인력이 추가되었습니다.
+                나이 : %d
+                이름 : %s
+                """.formatted(p.getId(),p.getAge(),p.getName());
+    }
+
+    @AllArgsConstructor
+    @Getter
+    @Setter
+    class Person {
+
+        private int id;
+        private int age;
+        private String name;
+
+    };
+
 }
 
     @AllArgsConstructor
@@ -324,6 +357,10 @@ public class MainController {
             this(++lastId,title,body);
         }
     }
+
+
+
+
 
 
 
