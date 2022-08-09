@@ -318,18 +318,39 @@ public class MainController {
 
 */
     private List<Person> people = new ArrayList<>();
-    @GetMapping("/addPerson")
+    @GetMapping("/addPersonModel")
     @ResponseBody
-    public String addPerson(@ModelAttribute("p") Person p) {
+    public String addPersonModel(@ModelAttribute("p") Person p) {
         System.out.println(p);
         people.add(p);
         return """
-                %d번 인력이 추가되었습니다.
-                나이 : %d
+                %d번 인력이 추가되었습니다. <br>
+                나이 : %d <br>
                 이름 : %s
                 """.formatted(p.getId(),p.getAge(),p.getName());
     }
-
+    @GetMapping("/addPerson")
+    @ResponseBody
+    public String addPerson(Person p) {
+        System.out.println(p);
+        people.add(p);
+        return """
+                %d번 인력이 추가되었습니다. <br>
+                나이 : %d <br>
+                이름 : %s
+                """.formatted(p.getId(),p.getAge(),p.getName());
+    }
+    @GetMapping("/addPerson/{id}")
+    @ResponseBody
+    public String addPersonParamId(Person p) {
+        System.out.println(p);
+        people.add(p);
+        return """
+                %d번 인력이 추가되었습니다. <br>
+                나이 : %d <br>
+                이름 : %s
+                """.formatted(p.getId(),p.getAge(),p.getName());
+    }
     @AllArgsConstructor
     @Getter
     @Setter
