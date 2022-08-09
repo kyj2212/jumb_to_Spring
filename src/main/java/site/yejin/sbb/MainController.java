@@ -342,7 +342,8 @@ public class MainController {
     }
     @GetMapping("/addPerson/{id}")
     @ResponseBody
-    public String addPersonParamId(Person p) {
+    public String addPersonParamId(Person p, @PathVariable int id ) {
+        System.out.println("id : "+id);
         System.out.println(p);
         people.add(p);
         return """
