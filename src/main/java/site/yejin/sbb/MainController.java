@@ -1,11 +1,15 @@
 package site.yejin.sbb;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -13,6 +17,7 @@ import java.util.stream.IntStream;
 public class MainController {
 
     private static int num=0;
+    private List<Article> articles = new ArrayList<>();
     @RequestMapping("/sbb")
     @ResponseBody
     public String index(){
@@ -132,22 +137,25 @@ public class MainController {
 
     }
 
-    @GetMapping("/mbti")
+    @GetMapping("/mbti/{name}")
     @ResponseBody
-    public String showGugudan(String name) {
-
-        return switch (name){
-            case "홍길순" -> "INFP";
-            case "임꺽정"-> "ENFP";
-            case "홍길동" -> {
+    public String showMbti(@PathVariable String name) {
+        return switch (name) {
+            case "홍길순" -> {
                 char j = 'J';
                 yield "INF" + j;
             }
-            case "김예진","김김김" -> "ESTJ";
+            case "임꺽정" -> "ENFP";
+            case "장희성", "홍길동" -> "INFP";
             default -> "모름";
         };
+    }
 
-/*        switch (name){
+    @GetMapping("/mbtiparam")
+    @ResponseBody
+    public String showMbti_param(String name) {
+
+        switch (name){
             case "홍길동" :
                 return "<h1>INFP</h1>";
 
@@ -162,7 +170,7 @@ public class MainController {
 
 
         }
-        return "<h1>없음</h1>";*/
+        return "<h1>없음</h1>";
     }
 
 /*    @GetMapping("/page1")
@@ -192,11 +200,12 @@ public class MainController {
     }*/
 
 
+    /* 내 소스 */
     @GetMapping("/saveSessionAge")
     @ResponseBody
-    public String showSaveSessionAge(int age, HttpServletRequest req) {
+    public String showSaveSessionAge(Integer age, HttpServletRequest req) {
         HttpSession session = req.getSession();
-        System.out.println("session : "+session);
+        System.out.println("save session : "+session);
 
         session.setAttribute("age",age);
 
@@ -208,10 +217,70 @@ public class MainController {
     public String showGetSessionAge(HttpServletRequest req){
 
         HttpSession session=req.getSession();
+        System.out.println("get session : "+session);
         int age = (int)session.getAttribute("age");
         return """
                 <h1>age : %d</h1>
                 """.formatted(age);
     }
 
+    
+    /*강사님 소스*/
+    @GetMapping("/saveSession/{name}/{value}")
+    @ResponseBody
+    public String saveSession(@PathVariable String name, @PathVariable String value, HttpServletRequest req) {
+        HttpSession session = req.getSession();
+
+        session.setAttribute(name, value);
+
+        return "세션변수 %s의 값이 %s(으)로 설정되었습니다.".formatted(name, value);
+    }
+
+    @GetMapping("/getSession/{name}")
+    @ResponseBody
+    public String getSession(@PathVariable String name, HttpSession session) {
+        String value = (String) session.getAttribute(name);
+
+        return "세션변수 %s의 값이 %s 입니다.".formatted(name, value);
+    }
+
+    @GetMapping("/addArticle")
+    @ResponseBody
+    public String addArticle(String title, String body) {
+        Article article = new Article(title, body);
+        articles.add(article);
+        return "%d번 게시물이 생성되었습니다.".formatted(article.getId());
+    }
+
+    @GetMapping("/article/{id}")
+    @ResponseBody
+    public Article getArticle(@PathVariable int id) {
+        Article article = articles
+                .stream()
+                .filter(a -> a.getId() == id) // 1번
+                .findFirst()
+                .get();
+
+        return article;
+    }
 }
+
+    @AllArgsConstructor
+    @Getter
+    class Article {
+        private static int lastId = 0;
+
+        private final int id;
+        private final String title;
+        private final String body;
+
+        public Article(String title, String body){
+            this(++lastId,title,body);
+        }
+    }
+
+
+
+
+    
+
