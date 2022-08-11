@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,10 +18,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class SbbApplicationTests {
     @Autowired
     private QuestionRepository questionRepository; // questionRepo 는 sbbtest 클래스가 생성될때 같이 생성되어야 하는 필드이다. // qeustionController, service를 만든다면 이 필드가 들어가겟지
+    private AnswerRepository answerRepository;
 
     @Test
     void contextLoads() {
     }
+
+    @Test
+    public void testJpaTruncateTable(){
+        this.questionRepository.setForeignKeyChecks0();
+        this.questionRepository.truncateTable();
+        this.questionRepository.setForeignKeyChecks1();
+    }
+
 
     @Test
     void testJpa() {
@@ -123,5 +133,20 @@ class SbbApplicationTests {
         this.questionRepository.delete(q);
         System.out.println(q.getId()+" " +q.getSubject() + " exist? : "+ this.questionRepository.existsById(q.getId()));
         assertEquals(cntOrg-1,this.questionRepository.count() );
+    }
+
+
+
+
+    @Test
+    public void testJpaSelectAnswer(){
+
+        List<Answer> all = this.answerRepository.findAll();
+        System.out.println(all);
+        assertEquals(2, all.size());
+
+
+        //assertEquals("sbb가 무엇인가요?", q.getSubject());
+        
     }
 }
