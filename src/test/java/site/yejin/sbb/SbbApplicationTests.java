@@ -24,11 +24,13 @@ class SbbApplicationTests {
     void contextLoads() {
     }
 
+
+
     @Test
     public void testJpaTruncateTable(){
-        this.questionRepository.setForeignKeyChecks0();
+        this.questionRepository.setForeignKeyChecks(0);
         this.questionRepository.truncateTable();
-        this.questionRepository.setForeignKeyChecks1();
+        this.questionRepository.setForeignKeyChecks(1);
     }
 
 

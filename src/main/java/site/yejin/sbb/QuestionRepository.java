@@ -26,4 +26,6 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     void setForeignKeyChecks0();
     @Query(value = "SET FOREIGN_KEY_CHECKS=1",nativeQuery = true)
     void setForeignKeyChecks1();
+    @Query(value = "SET FOREIGN_KEY_CHECKS=?",nativeQuery = true)
+    void setForeignKeyChecks(int i);
 }
