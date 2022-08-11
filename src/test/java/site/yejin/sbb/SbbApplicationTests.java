@@ -6,12 +6,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
+import site.yejin.sbb.base.RepositoryUtil;
 
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,6 +33,12 @@ class SbbApplicationTests {
     @Autowired
     private AnswerRepository answerRepository;
 
+
+    @PersistenceContext
+    EntityManager entityManager;
+
+    private static int lastTestDataId;
+    private List<String> tableNames;
     @Test
     void contextLoads() {
     }
@@ -35,51 +48,80 @@ class SbbApplicationTests {
     @BeforeAll
     public void beforeAll() {
 
-
+        tableNames=new ArrayList<>();
+        tableNames.add("question");
+        tableNames.add("answer");
 
     }
 
+
+/*
+    @BeforeEach
+    public void beforeEachTruncate() {
+        System.out.println("이거 안돼?");
+
+        //entityManager.createNativeQuery("SELECT @@global.foreign_key_checks,@@session.foreign_key_checks");
+        entityManager.flush();
+        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS=0").executeUpdate();
+        truncateTable();
+        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS=1").executeUpdate();
+       // nativeQuery = entityManager.createNativeQuery("SELECT @@global.foreign_key_checks,@@session.foreign_key_checks");
+        //System.out.println(nativeQuery);
+    }
+
+    @BeforeEach
+    public void beforeEachCreate() {
+        createTestData();
+    }
+*/
 
     @BeforeEach
     public void beforeEach() {
         truncateTable();
-        makeTestData();
+        createTestData();
     }
+
+
+    @Transactional
+    public void execute() {
+        entityManager.flush();
+        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS=0").executeUpdate();
+
+        for (String tableName : tableNames) {
+            // 테이블의 모든 row 삭제
+            entityManager.createNativeQuery("TRUNCATE TABLE " + tableName).executeUpdate();
+        }
+        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS=1").executeUpdate();
+    }
+
 
     private void truncateTable() {
+
         truncateQuestionTable();
         truncateAnswerTable();
+
+
     }
 
-    public void makeTestData() {
-        makeQuestionTestData();
-        makeAnswerTestData();
+
+    public void truncateQuestionTable() {
+        this.questionRepository.truncate();
+        //this.questionRepository.setForeignKeyChecks(1);
+    }
+    public void truncateAnswerTable() {
+        // answers 는 foreign key가 없다!
+        this.answerRepository.truncate();
     }
 
-    private void makeAnswerTestData() {
-        Question q1 = findQuestionById(0);
-        Answer a1 = new Answer();
-        a1.setContent("sbb는 스프링부트 게시판 프로젝트 입니다");
-        a1.setQuestion(q1);
-        a1.setCreateDate(LocalDateTime.now());
-        this.answerRepository.save(a1);
+    // create Test Data
 
-        Question q2 = findQuestionById(1);
-        Answer a2 = new Answer();
-        a2.setContent("id는 자동으로 생성됩니다.");
-        a2.setQuestion(q2);
-        a2.setCreateDate(LocalDateTime.now());
-        this.answerRepository.save(a2);
+    public void createTestData() {
+        insertQuestionTestData();
+        insertAnswerTestData();
     }
 
-    private Question findQuestionById(int id) {
-        List<Question> all = this.questionRepository.findAll();
-        System.out.println(all);
 
-        return all.get(id);
-    }
-
-    private void makeQuestionTestData() {
+    private void insertQuestionTestData() {
         Question q1 = new Question();
         q1.setSubject("sbb가 무엇인가요?");
         q1.setContent("sbb에 대해서 알고 싶습니다.");
@@ -92,27 +134,50 @@ class SbbApplicationTests {
         q2.setContent("id는 자동으로 생성되나요?");
         q2.setCreateDate(LocalDateTime.now());
         this.questionRepository.save(q2);  // 두번째 질문 저장
+
+        lastTestDataId=q2.getId();
     }
 
-    public void truncateQuestionTable() {
-        this.questionRepository.setForeignKeyChecks(0);
-        this.questionRepository.truncateTable();
-        this.questionRepository.setForeignKeyChecks(1);
+
+
+    private void insertAnswerTestData() {
+        Question q1 = findQuestionById(1);
+        Answer a1 = new Answer();
+        a1.setContent("sbb는 스프링부트 게시판 프로젝트 입니다");
+        a1.setQuestion(q1);
+        a1.setCreateDate(LocalDateTime.now());
+        this.answerRepository.save(a1);
+
+        Question q2 = findQuestionById(2);
+        Answer a2 = new Answer();
+        a2.setContent("id는 자동으로 생성됩니다.");
+        a2.setQuestion(q2);
+        a2.setCreateDate(LocalDateTime.now());
+        this.answerRepository.save(a2);
     }
-    public void truncateAnswerTable() {
-        this.answerRepository.setForeignKeyChecks(0);
-        this.answerRepository.truncateTable();
-        this.answerRepository.setForeignKeyChecks(1);
+
+    private Question findQuestionById(int id) {
+        Optional<Question> oq = this.questionRepository.findById(id);
+        if(oq.isPresent()){
+            Question q= oq.get();
+            return q;
+        } else
+            return null;
+//        List<Question> all = this.questionRepository.findAll();
+ //       System.out.println(all);
     }
 
 
     @Test
-    public void testJpaTruncateTable(){
+    public void testJpaTruncateTableQ(){
         this.questionRepository.setForeignKeyChecks(0);
-        this.questionRepository.truncateTable();
+        this.questionRepository.truncate();
         this.questionRepository.setForeignKeyChecks(1);
     }
-
+    @Test
+    public void testJpaTruncateTableA(){
+        this.answerRepository.truncate();
+    }
 
 /*
     @Test
@@ -124,38 +189,32 @@ class SbbApplicationTests {
 
     @Test
     void testJpaInsertQuestion() {
-        Question q1 = new Question();
-        q1.setSubject("sbb가 무엇인가요?");
-        q1.setContent("sbb에 대해서 알고 싶습니다.");
-        q1.setCreateDate(LocalDateTime.now());
-        // this를 하는이유?
-        this.questionRepository.save(q1);  // 첫번째 질문 저장
-
-        Question q2 = new Question();
-        q2.setSubject("스프링부트 모델 질문입니다.");
-        q2.setContent("id는 자동으로 생성되나요?");
-        q2.setCreateDate(LocalDateTime.now());
-        this.questionRepository.save(q2);  // 두번째 질문 저장
-
-        assertThat(q1.getId()).isGreaterThan(0);
-        assertThat(q2.getId()).isGreaterThan(q1.getId());
+        Question q = new Question();
+        q.setSubject("new subject");
+        q.setContent("new question");
+        q.setCreateDate(LocalDateTime.now());
+        this.questionRepository.save(q);
+        assertThat(q.getId()).isGreaterThan(0);
     }
+
+
 
     @Test
     public void testJpaInsertIntoAnswer() {
-        Question q1 = findQuestionById(0);
-        Answer a1 = new Answer();
-        a1.setContent("sbb는 스프링부트 게시판 프로젝트 입니다");
-        a1.setQuestion(q1);
-        a1.setCreateDate(LocalDateTime.now());
-        this.answerRepository.save(a1);
+        insertAnswerTestData();
 
-        Question q2 = findQuestionById(1);
-        Answer a2 = new Answer();
-        a2.setContent("id는 자동으로 생성됩니다.");
-        a2.setQuestion(q2);
-        a2.setCreateDate(LocalDateTime.now());
-        this.answerRepository.save(a2);
+        Optional<Question> oq = this.questionRepository.findById(lastTestDataId);
+        assertTrue(oq.isPresent());
+        Question q= oq.get();
+       // System.out.println(q.getContent());
+       // System.out.println("처음 질문 에 있는 답변 개수 : "+q.getAnswerList().size());
+        Answer a = new Answer();
+        a.setContent("new answer");
+        a.setQuestion(q);
+        a.setCreateDate(LocalDateTime.now());
+        this.answerRepository.save(a);
+      //  int size =q.getAnswerList().size();
+      //  System.out.println("답변 추가후 질문에 있는 답변 개수 : "+size+" 넣은 답변 : "+q.getAnswerList().get(size-1).getContent());
     }
 
     @Test
@@ -168,6 +227,13 @@ class SbbApplicationTests {
         }
     }
 
+    @Test
+    void testJpaFindbyId(){
+        Optional<Question> oq = this.questionRepository.findById(1);
+        assertTrue(oq.isPresent());
+        Question q= oq.get();
+        assertEquals("sbb가 무엇인가요?", q.getSubject());
+    }
 
     @Test
     void testJpaFindAllGetId(){
@@ -200,7 +266,7 @@ class SbbApplicationTests {
     }
 
     @Test
-    void testJpaQFindById(){
+    void testJpaUpdate(){
         Optional<Question> oq = this.questionRepository.findById(1);
         assertTrue(oq.isPresent());
         Question q = oq.get();
@@ -236,11 +302,24 @@ class SbbApplicationTests {
         // findById는 CrudRopository 인터페이스에 속해있는 	Optional<T> findById(ID id); 추상 메소드 이고,
         // findBySubject는 JPA(?) 또는 스프링(?) 이 repo 의 필드값을 기준으로 자동으로 생성하는 메소드로 리턴값이 Question이다. 그래서 다르다!!!
         // Optional<Question> oq2 = this.questionRepository.findBySubject(subject);
-        //Question q = dList.get(1);
-        //this.questionRepository.delete(q);
-        //System.out.println(q.getId()+" " +q.getSubject() + " exist? : "+ this.questionRepository.existsById(q.getId()));
-        assertEquals(cntOrg,this.questionRepository.count() );
+        Question q = dList.get(0); // 일단 첫번째 값만 가져와
+        this.questionRepository.delete(q);
+        System.out.println(q.getId()+" " +q.getSubject() + " exist? : "+ this.questionRepository.existsById(q.getId()));
+        assertEquals(cntOrg-1,this.questionRepository.count() );
     }
+
+
+    @Test
+    public void testJpaQueryParam(){
+
+
+        //this.questionRepository.selectFromQMark("question");
+        //this.questionRepository.selectFromParamName("question");
+        //this.questionRepository.selectFromParamAnno("question");
+        this.questionRepository.findByUserId("sbb가 무엇인가요?");
+    }
+
+
 
 
 
