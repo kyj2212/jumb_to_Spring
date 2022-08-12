@@ -50,14 +50,14 @@ public class AnswerRepoTests {
         a1.setContent("sbb는 질문답변 게시판 입니다.");
         a1.setQuestion(q);
         a1.setCreateDate(LocalDateTime.now());
-        //q.addAnswerList(a1);
+k
         answerRepository.save(a1);
 
         Answer a2 = new Answer();
         a2.setContent("sbb에서는 주로 스프링부트관련 내용을 다룹니다.");
         a2.setQuestion(q);
         a2.setCreateDate(LocalDateTime.now());
-       // q.addAnswerList(a2);
+        //q.addAnswerList(a2);
         answerRepository.save(a2);
 
         lastTestAnswerId=a2.getId();

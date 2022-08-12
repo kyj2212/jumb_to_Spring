@@ -30,17 +30,17 @@ public class Question {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList;
-    //private List<Answer> answerList;
 
     public void initAnswerList() {
         if (answerList == null) {
             this.answerList = new ArrayList<>();
         }
     }
-    public void addAnswerList(Answer answer){
+    // list는 OneToMany 로 엔티티의 값들이 들어가기 때문에, 굳이 add 할 필요가 없다.
+/*    public void addAnswerList(Answer answer){
         if (answerList == null) {
             this.answerList = new ArrayList<>();
         }
         answerList.add(answer);
-    }
+    }*/
 }

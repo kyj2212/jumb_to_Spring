@@ -55,6 +55,12 @@ public class QuestionRepoTests {
         clearData(questionRepository);
     }
 
+
+    @Test
+    void test_clearData(){
+        clearData();
+    }
+
     @Test
     void test_save() {
         Question q1 = new Question();

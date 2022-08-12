@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import site.yejin.sbb.base.RepositoryUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface QuestionRepository extends JpaRepository<Question,Integer> , RepositoryUtil {
@@ -43,6 +44,7 @@ public interface QuestionRepository extends JpaRepository<Question,Integer> , Re
     // ? 파라미터는 where절에 쓰이는 조건을 위한 표현으로, FROM 절에는 안된다.
     @Query(value="SELECT * FROM question q WHERE q.subject = ?", nativeQuery = true)
     public List<Question> findByUserId(String subject);
+
 
 
 }
