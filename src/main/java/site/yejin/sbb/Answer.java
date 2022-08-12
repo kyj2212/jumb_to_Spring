@@ -19,7 +19,7 @@ public class Answer {
 
     private LocalDateTime createDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     //@JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Question question;
 }

@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Getter
@@ -15,12 +18,23 @@ public class Question {
     @Id // primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
     private Integer id;
+
     @Column(length = 200) // varchar(200)
     private String subject;
+
     @Column(columnDefinition = "TEXT")
     private String content;
     private LocalDateTime createDate;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList;
+    //private List<Answer> answerList;
+
+
+    public void addAnswerList(Answer answer){
+        if (answerList == null) {
+            this.answerList = new ArrayList<>();
+        }
+        answerList.add(answer);
+    }
 }

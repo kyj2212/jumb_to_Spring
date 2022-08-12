@@ -6,17 +6,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface RepositoryUtil {
 
-    @Transactional
-    @Modifying
+
     void truncateTable();
 
     @Query(value = "SET FOREIGN_KEY_CHECKS=?",nativeQuery = true)
     void setForeignKeyChecks(int i);
 
     default void truncate(){
-        setForeignKeyChecks(0);
+       // setForeignKeyChecks(0);
         this.truncateTable();
-        setForeignKeyChecks(1);
+      //  setForeignKeyChecks(1);
     }
 
 
