@@ -5,9 +5,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Component;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import site.yejin.sbb.answer.Answer;
+import site.yejin.sbb.answer.AnswerRepository;
+import site.yejin.sbb.question.Question;
+import site.yejin.sbb.question.QuestionRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,14 +36,15 @@ public class AnswerRepoTests {
         createSampleData();
     }
     private void clearData() {
-        AnswerRepoTests.clearData(answerRepository);
-        answerRepository.truncate();
+        QuestionRepoTests.clearData(questionRepository);
+        clearData(answerRepository);
     }
     public static void clearData(AnswerRepository answerRepository) {
         answerRepository.deleteAll(); // DELETE FROM question;
         answerRepository.truncate();
     }
 
+    @Transactional
     private void createSampleData() {
         QuestionRepoTests.createSampleData(questionRepository);
 
@@ -49,6 +53,7 @@ public class AnswerRepoTests {
         a1.setContent("sbb는 질문답변 게시판 입니다.");
         a1.setQuestion(q);
         a1.setCreateDate(LocalDateTime.now());
+        q.addAnswerList(a1);
 
         answerRepository.save(a1);
 
@@ -56,13 +61,14 @@ public class AnswerRepoTests {
         a2.setContent("sbb에서는 주로 스프링부트관련 내용을 다룹니다.");
         a2.setQuestion(q);
         a2.setCreateDate(LocalDateTime.now());
-        //q.addAnswerList(a2);
+        q.addAnswerList(a2);
         answerRepository.save(a2);
 
         lastTestAnswerId=a2.getId();
         lastTestAnswerQuestionId=a2.getQuestion().getId();
     }
 
+    @Transactional
     @Test
     void test__save() {
         Question q = questionRepository.findById(2).get();
@@ -73,6 +79,7 @@ public class AnswerRepoTests {
         answerRepository.save(a);
     }
 
+    @Transactional
     @Test
     void test_findById() {
         Answer a = this.answerRepository.findById(1).get();

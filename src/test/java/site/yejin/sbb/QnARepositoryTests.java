@@ -6,6 +6,10 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import site.yejin.sbb.answer.Answer;
+import site.yejin.sbb.answer.AnswerRepository;
+import site.yejin.sbb.question.Question;
+import site.yejin.sbb.question.QuestionRepository;
 
 
 import javax.persistence.EntityManager;

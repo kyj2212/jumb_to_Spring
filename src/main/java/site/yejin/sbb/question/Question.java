@@ -1,13 +1,13 @@
-package site.yejin.sbb;
+package site.yejin.sbb.question;
 
 import lombok.Getter;
 import lombok.Setter;
+import site.yejin.sbb.answer.Answer;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Getter
@@ -37,11 +37,10 @@ public class Question {
             System.out.println("init list :"+answerList);
         }
     }
-    // list는 OneToMany 로 엔티티의 값들이 들어가기 때문에, 굳이 add 할 필요가 없다.
-/*    public void addAnswerList(Answer answer){
+    public void addAnswerList(Answer answer){
         if (answerList == null) {
             this.answerList = new ArrayList<>();
         }
         answerList.add(answer);
-    }*/
+    }
 }

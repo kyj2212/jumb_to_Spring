@@ -1,7 +1,8 @@
-package site.yejin.sbb;
+package site.yejin.sbb.answer;
 
 import lombok.Getter;
 import lombok.Setter;
+import site.yejin.sbb.question.Question;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
