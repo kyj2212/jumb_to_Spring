@@ -21,7 +21,6 @@ public class AnswerRepoTests {
 
     @Autowired
     private QuestionRepository questionRepository;
-
     @Autowired
     private AnswerRepository answerRepository;
     //private int lastSampleDataId;
@@ -50,7 +49,7 @@ public class AnswerRepoTests {
         a1.setContent("sbb는 질문답변 게시판 입니다.");
         a1.setQuestion(q);
         a1.setCreateDate(LocalDateTime.now());
-k
+
         answerRepository.save(a1);
 
         Answer a2 = new Answer();
@@ -108,7 +107,7 @@ k
         Question q= oq.get();
         System.out.println(q.getContent());
 
-        System.out.println("answerList is null? : "+q.getAnswerList());
+        System.out.println("answerList same?  : "+q.getAnswerList());
         System.out.println("처음 질문 에 있는 답변 개수 : "+q.getAnswerList().size());
 
         List<Answer> answerList = q.getAnswerList();

@@ -34,6 +34,7 @@ public class Question {
     public void initAnswerList() {
         if (answerList == null) {
             this.answerList = new ArrayList<>();
+            System.out.println("init list :"+answerList);
         }
     }
     // list는 OneToMany 로 엔티티의 값들이 들어가기 때문에, 굳이 add 할 필요가 없다.
