@@ -109,7 +109,7 @@ public class AnswerRepoTests {
         System.out.println("처음 질문 에 있는 답변 개수 : "+q.getAnswerList().size());
 
         List<Answer> answerList = q.getAnswerList();
-        assertThat(answerList.size()).isEqualTo(2);k
+        assertThat(answerList.size()).isEqualTo(2);
         assertThat(answerList.get(0).getContent()).isEqualTo("sbb는 질문답변 게시판 입니다.");
 
         //  int size =q.getAnswerList().size();
