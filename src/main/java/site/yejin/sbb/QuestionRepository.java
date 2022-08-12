@@ -14,7 +14,7 @@ public interface QuestionRepository extends JpaRepository<Question,Integer> , Re
     Question findBySubject(String subject);
 
     Question findBySubjectAndContent(String subject, String content);
-
+    Question findByContent(String content);
     List<Question> findBySubjectLike(String s);
 
     @Transactional
@@ -43,5 +43,6 @@ public interface QuestionRepository extends JpaRepository<Question,Integer> , Re
     // ? 파라미터는 where절에 쓰이는 조건을 위한 표현으로, FROM 절에는 안된다.
     @Query(value="SELECT * FROM question q WHERE q.subject = ?", nativeQuery = true)
     public List<Question> findByUserId(String subject);
+
 
 }

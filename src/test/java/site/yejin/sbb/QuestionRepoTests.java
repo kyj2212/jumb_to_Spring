@@ -4,11 +4,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class QuestionRepoTests {
@@ -24,14 +28,14 @@ public class QuestionRepoTests {
 
     public static int createSampleData(QuestionRepository questionRepository) {
         Question q1 = new Question();
-        q1.setSubject("1. sbb가 무엇인가요?");
-        q1.setContent("1. sbb에 대해서 알고 싶습니다.");
+        q1.setSubject("sbb가 무엇인가요?");
+        q1.setContent("sbb에 대해서 알고 싶습니다.");
         q1.setCreateDate(LocalDateTime.now());
         questionRepository.save(q1);
 
         Question q2 = new Question();
-        q2.setSubject("2. 스프링부트 모델 질문입니다.");
-        q2.setContent("2. id는 자동으로 생성되나요?");
+        q2.setSubject("스프링부트 모델 질문입니다.");
+        q2.setContent("id는 자동으로 생성되나요?");
         q2.setCreateDate(LocalDateTime.now());
         questionRepository.save(q2);
 
@@ -54,12 +58,15 @@ public class QuestionRepoTests {
     @Test
     void test_save() {
         Question q1 = new Question();
+        q1.initAnswerList();
         q1.setSubject("sbb가 무엇인가요?");
         q1.setContent("sbb에 대해서 알고 싶습니다.");
         q1.setCreateDate(LocalDateTime.now());
+
         questionRepository.save(q1);
 
         Question q2 = new Question();
+        q2.initAnswerList();
         q2.setSubject("스프링부트 모델 질문입니다.");
         q2.setContent("id는 자동으로 생성되나요?");
         q2.setCreateDate(LocalDateTime.now());
@@ -105,6 +112,13 @@ public class QuestionRepoTests {
         assertThat(q.getId()).isEqualTo(1);
     }
 
+
+    @Test
+    void test_findByContent() {
+        Question q = questionRepository.findByContent("sbb에 대해서 알고 싶습니다.");
+        assertThat(q.getId()).isEqualTo(1);
+    }
+
     @Test
     void test_findBySubjectAndContent() {
         Question q = questionRepository.findBySubjectAndContent(
@@ -118,5 +132,18 @@ public class QuestionRepoTests {
         Question q = qList.get(0);
 
         assertThat(q.getSubject()).isEqualTo("sbb가 무엇인가요?");
+    }
+
+    @Test
+    @Transactional
+    @Rollback(false)
+    void test_findAnswerListByQuestionId(){
+        Optional<Question> oq = this.questionRepository.findById(lastSampleDataId);
+        assertTrue(oq.isPresent());
+        Question q = oq.get();
+
+        System.out.println(q.getContent());
+        System.out.println(q.getAnswerList());
+
     }
 }
