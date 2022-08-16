@@ -16,13 +16,12 @@ public class AnswerService {
     @Autowired
     private AnswerRepository answerRepository;
 
-
-    public Answer create(Question question, String content) {
+    public void create(Question question, String content) {
         Answer answer = new Answer();
         answer.setContent(content);
         answer.setQuestion(question);
         answer.setCreateDate(LocalDateTime.now());
+        question.addAnswer(answer);
         this.answerRepository.save(answer);
-        return answer;
     }
 }

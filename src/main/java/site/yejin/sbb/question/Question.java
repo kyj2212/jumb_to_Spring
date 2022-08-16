@@ -37,7 +37,7 @@ public class Question {
             System.out.println("init list :"+answerList);
         }
     }
-    public void addAnswerList(Answer answer){
+    public void addAnswer(Answer answer){
         if (answerList == null) {
             this.answerList = new ArrayList<>();
         }

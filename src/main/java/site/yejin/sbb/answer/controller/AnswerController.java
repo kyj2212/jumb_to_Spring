@@ -7,12 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import site.yejin.sbb.answer.Answer;
 import site.yejin.sbb.answer.service.AnswerService;
 import site.yejin.sbb.question.Question;
 import site.yejin.sbb.question.QuestionService;
-
-import java.util.List;
 
 @RequestMapping("/answers")
 @Controller
@@ -25,9 +22,8 @@ public class AnswerController {
     @PostMapping("/{id}")
     public String create(@PathVariable int id, @RequestParam String content, Model model) {
         Question question= this.questionService.detail(id);
-        question.addAnswerList(this.answerService.create(question,content));
+        this.answerService.create(question,content);
         return String.format("redirect:/questions/%s",id);
     }
-
 
 }
