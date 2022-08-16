@@ -29,20 +29,10 @@
                     </div>
                     <form th:action="@{|/answers/${question.id}|}" method="post">
                         <textarea class="form-control form-control-lg" name="content" id="content" placeholder="답변을 입력해주세요"></textarea>
-                        <div class="col-auto"><button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">답변등록</button></div>
+                        <div class="col-auto">
+                            <button class="btn btn-primary btn-lg enabled" id="submitButton" type="submit">답변등록</button>
+                        </div>
                     </form>
-
-                    <blockquote class="blockquote">블럭 인용</blockquote>
-
-                    <a href="#!"><img class="img-fluid" src="/image/test_logo.jpg" alt="..." /></a>
-                    <span class="caption text-muted"> span caption</span>
-                    <p>마무리 답변 끝</p>
-                    <p>
-                        Placeholder text by
-                        <a href="http://spaceipsum.com/">Space Ipsum</a>
-                        &middot; Images by
-                        <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>
-                    </p>
                 </div>
             </div>
         </div>
