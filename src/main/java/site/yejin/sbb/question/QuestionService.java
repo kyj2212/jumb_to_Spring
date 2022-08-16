@@ -2,8 +2,7 @@ package site.yejin.sbb.question;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import site.yejin.sbb.question.Question;
-import site.yejin.sbb.question.QuestionRepository;
+import site.yejin.sbb.global.exception.DataNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +17,13 @@ public class QuestionService {
     }
 
     public Question detail(int id) {
-        Question q = questionRepository.findById(id).get();
-        return q;
+
+        Optional<Question> q = questionRepository.findById(id);
+        if (q.isPresent()){
+            return q.get();
+        }
+        else{
+            throw new DataNotFoundException("question not found");
+        }
     }
 }
