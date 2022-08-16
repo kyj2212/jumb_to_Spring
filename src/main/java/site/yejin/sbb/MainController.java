@@ -10,7 +10,7 @@ public class MainController {
 
     @RequestMapping("/")
     public String root() {
-        return "redirect:/question/list";
+        return "redirect:/questions";
     }
 
     @RequestMapping("/sbb")
@@ -18,5 +18,10 @@ public class MainController {
     public String index() {
         System.out.println("index");
         return "/sbb main page";
+    }
+
+    @RequestMapping("/post")
+    public String home() {
+        return "post";
     }
 }
