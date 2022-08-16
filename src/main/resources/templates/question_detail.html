@@ -1,16 +1,48 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head lang="ko">
-    <title>질문 상세</title>
-    <th:block th:include="layout/header"></th:block>
-</head>
-<body>
-<div class="container">
-    <h1 th:text="${question.subject}"></h1>
-    <div th:text="${question.content}"></div>
-    <div th:text="|Date. ${#strings.substring(question.createDate, 2, 16)}|"></div>
-    <div><a th:href="${'/products/edit/' + question.id}" class="btn btn-default">Edit</a></div>
-    <div><a th:href="${'/products/delete/' + question.id}" class="btn btn-danger">Delete</a></div>
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+    <header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="post-heading">
+                        <h1 th:text="${question.subject}"></h1>
+                        <h2 th:text="${question.content}" class="subheading"></h2>
+                        <span class="meta">
+                                Questioned by
+                                <a href="#!">예진</a>
+                                <a th:text="${#temporals.format(createDate, 'dd-MM-yyyy HH:mm')}" href="#">on</a>
+                                <p th:text="|on ${#strings.substring(question.createDate, 2, 10)}|"></p>
+                            </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- 답변 리스트 -->
+    <article class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <p>답변 리스트 </p>
+                    <p>답변 리스트 </p>
+                    <h2 class="section-heading">답변1</h2>
+                    <p>답변 내용1</p>
+                    <blockquote class="blockquote">블럭 인용</blockquote>
+                    <h2 class="section-heading">답변2</h2>
+                    <p>답변 내용2</p>
+                    <a href="#!"><img class="img-fluid" src="assets/img/post-sample-image.jpg" alt="..." /></a>
+                    <span class="caption text-muted"> span caption</span>
+                    <p>마무리 답변 끝</p>
+                    <p>
+                        Placeholder text by
+                        <a href="http://spaceipsum.com/">Space Ipsum</a>
+                        &middot; Images by
+                        <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </article>
 </div>
-</body>
 </html>
+
