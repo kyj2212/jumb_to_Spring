@@ -13,12 +13,12 @@ public class QuestionService {
     @Autowired
     private QuestionRepository questionRepository;
 
-    public Question findById(int id) {
-        Question q = questionRepository.findById(id).get();
-        return q;
-    }
-
     public List<Question> list() {
         return questionRepository.findAll();
+    }
+
+    public Question detail(int id) {
+        Question q = questionRepository.findById(id).get();
+        return q;
     }
 }
