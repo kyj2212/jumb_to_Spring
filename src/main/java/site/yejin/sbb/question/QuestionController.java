@@ -13,13 +13,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuestionController
 {
-    //@Autowired
+    //@Autowired // 필드 주입
     private final QuestionService questionService;
 
-    @RequestMapping("/question/list")
+    @RequestMapping("/questions")
     //@ResponseBody
     public String list(Model model) {
-        List<Question> questionList = questionService.findAll();
+        List<Question> questionList = questionService.list();
         model.addAttribute("questionList",questionList);
         return "question_list";
     }
