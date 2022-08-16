@@ -17,13 +17,7 @@ public class QuestionService {
     }
 
     public Question detail(int id) {
-
-        Optional<Question> q = questionRepository.findById(id);
-        if (q.isPresent()){
-            return q.get();
-        }
-        else{
-            throw new DataNotFoundException("question not found");
-        }
+        return this.questionRepository.findById(id)
+                .orElseThrow(()-> new DataNotFoundException("%d question not found".formatted(id)));
     }
 }
