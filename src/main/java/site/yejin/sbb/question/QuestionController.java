@@ -8,22 +8,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@RequestMapping("/questions")
+
 @Controller
 @RequiredArgsConstructor
-public class QuestionController
-{
+public class QuestionController {
     //@Autowired // 필드 주입
     private final QuestionService questionService;
 
-    @RequestMapping("/")
+    @RequestMapping("/questions")
     public String list(Model model) {
         List<Question> questionList = questionService.list();
         model.addAttribute("questionList",questionList);
         return "question_list";
     }
 
-    @RequestMapping("/{id}")
+    @RequestMapping("/questions/{id}")
     public String detail(@PathVariable int id, Model model){
         Question question = questionService.detail(id);
         model.addAttribute("question",question);

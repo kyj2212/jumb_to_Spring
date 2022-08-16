@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import site.yejin.sbb.base.RepositoryUtil;
-import site.yejin.sbb.question.Question;
 
 import java.util.List;
 
