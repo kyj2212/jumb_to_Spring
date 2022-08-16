@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import site.yejin.sbb.answer.Answer;
 import site.yejin.sbb.base.RepositoryUtil;
+import site.yejin.sbb.question.Question;
 
 public interface AnswerRepository extends JpaRepository<Answer,Integer>, RepositoryUtil {
     @Transactional
