@@ -114,10 +114,10 @@ public class AnswerRepoTests {
         Question q= oq.get();
         System.out.println(q.getContent());
 
-        System.out.println("answerList same?  : "+q.getAnswerList());
-        System.out.println("처음 질문 에 있는 답변 개수 : "+q.getAnswerList().size());
-
         List<Answer> answerList = q.getAnswerList();
+
+        System.out.println("처음 질문 에 있는 답변 개수 : "+q.getAnswerList().size());
+        System.out.println("answerList same?  : "+q.getAnswerList());
         assertThat(answerList.size()).isEqualTo(2);
         assertThat(answerList.get(0).getContent()).isEqualTo("sbb는 질문답변 게시판 입니다.");
 
