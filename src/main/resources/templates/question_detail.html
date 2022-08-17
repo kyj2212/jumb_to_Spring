@@ -1,7 +1,7 @@
 <html
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://www.thymeleaf.org"
-        layout:decorate="~{layout}">
+        layout:decorate="~{layout/layout_detail}">
     <div layout:fragment="content" class="container my-3">
         <header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
             <div class="container position-relative px-4 px-lg-5">
@@ -12,8 +12,8 @@
                             <h2 th:text="${question.content}" class="subheading"></h2>
                             <span class="meta">
                                         Questioned by
-                                        <a href="#!">예진</a>
-                                        <a th:text="${#temporals.format(createDate, 'dd-MM-yyyy HH:mm')}" href="#">on</a>
+                                        <a th:href="@{#!}">예진</a>
+                                        <a th:text="${#temporals.format(createDate, 'dd-MM-yyyy HH:mm')}" th:href="@{#}">on</a>
                                         <p th:text="|on ${#strings.substring(question.createDate, 2, 10)}|"></p>
                                     </span>
                         </div>

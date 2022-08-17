@@ -1,7 +1,7 @@
 <html
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://www.thymeleaf.org"
-        layout:decorate="~{layout_01}">
+        layout:decorate="~{layout/layout_list}">
     <div layout:fragment="content" class="container my-3">
         <!-- Header-->
         <header class="bg-dark py-5">
@@ -36,8 +36,8 @@
                             </div>
                             <!-- question actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">수정</a></div>
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">삭제</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{#}">수정</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{#}">삭제</a></div>
                             </div>
                         </div>
                     </div>
