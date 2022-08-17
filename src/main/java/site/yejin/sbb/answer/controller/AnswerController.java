@@ -28,7 +28,6 @@ public class AnswerController {
     public String create(@PathVariable int id, Model model, @Valid AnswerCreateForm answerCreateForm, BindingResult bindingResult) {
         Question question= this.questionService.detail(id);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("question", question);
             return "question_detail";
         }
         this.answerService.create(question,answerCreateForm.getContent());

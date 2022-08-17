@@ -12,6 +12,7 @@ import site.yejin.sbb.question.QuestionRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -156,4 +157,20 @@ public class QuestionRepoTests {
         System.out.println(q.getAnswerList());
 
     }
+
+    @Test
+    void createManySampleData() {
+        boolean run = true;
+
+        if (run == false) return;
+
+        IntStream.rangeClosed(3, 300).forEach(id -> {
+            Question q = new Question();
+            q.setSubject("%d번 질문".formatted(id));
+            q.setContent("%d번 질문의 내용".formatted(id));
+            q.setCreateDate(LocalDateTime.now());
+            questionRepository.save(q);
+        });
+    }
+
 }
