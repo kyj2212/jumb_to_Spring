@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import site.yejin.sbb.answer.AnswerCreateForm;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -30,7 +31,7 @@ public class QuestionController {
     }
 
     @RequestMapping("/questions/{id}")
-    public String detail(@PathVariable int id, Model model){
+    public String detail(@PathVariable int id, Model model, AnswerCreateForm answerCreateForm){
         Question question = questionService.detail(id);
         model.addAttribute("question",question);
         return "question_detail";

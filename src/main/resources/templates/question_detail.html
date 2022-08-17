@@ -30,7 +30,8 @@
                             <h2 class="section-heading" th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h2>
                             <p th:each="answer : ${question.answerList}" th:text="${answer.content}"></p>
                         </div>
-                        <form th:action="@{|/answers/${question.id}|}" method="post">
+                        <form th:action="@{|/answers/${question.id}|}" th:object="${answerCreateForm}" method="post">
+                            <div th:replace="form_errors :: formErrorsFragment"></div>
                             <textarea class="form-control form-control-lg" name="content" id="content"
                                       placeholder="답변을 입력해주세요"></textarea>
                             <div class="col-auto">
