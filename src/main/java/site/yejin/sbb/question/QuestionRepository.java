@@ -1,6 +1,8 @@
 package site.yejin.sbb.question;
 
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +17,7 @@ public interface QuestionRepository extends JpaRepository<Question,Integer> , Re
     Question findBySubjectAndContent(String subject, String content);
     Question findByContent(String content);
     List<Question> findBySubjectLike(String s);
+    Page<Question> findAll(Pageable pageable);
 
     @Transactional
     @Modifying
