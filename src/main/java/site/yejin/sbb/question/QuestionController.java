@@ -1,6 +1,7 @@
 package site.yejin.sbb.question;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class QuestionController {
     //@Autowired // 필드 주입
     private final QuestionService questionService;
@@ -41,6 +43,9 @@ public class QuestionController {
 
     @PostMapping("/question")
     public String create(@Valid QuestionCreateForm questionCreateForm, BindingResult bindingResult){
+        log.debug("questionForm : "+questionCreateForm);
+        log.debug("subejct : "+questionCreateForm.getSubject());
+        log.debug("content : "+questionCreateForm.getContent());
 
         if (bindingResult.hasErrors()) {
             return "question_form";
