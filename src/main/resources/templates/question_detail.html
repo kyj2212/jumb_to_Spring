@@ -1,42 +1,46 @@
-<html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container my-3">
-    <header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
-        <div class="container position-relative px-4 px-lg-5">
-            <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-md-10 col-lg-8 col-xl-7">
-                    <div class="post-heading">
-                        <h1 th:text="${question.subject}"></h1>
-                        <h2 th:text="${question.content}" class="subheading"></h2>
-                        <span class="meta">
-                                Questioned by
-                                <a href="#!">예진</a>
-                                <a th:text="${#temporals.format(createDate, 'dd-MM-yyyy HH:mm')}" href="#">on</a>
-                                <p th:text="|on ${#strings.substring(question.createDate, 2, 10)}|"></p>
-                            </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- 답변 리스트 -->
-    <article class="mb-4">
-        <div class="container px-4 px-lg-5">
-            <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-md-10 col-lg-8 col-xl-7">
-                    <div>
-                    <h2 class="section-heading" th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h2>
-                            <p  th:each="answer : ${question.answerList}" th:text="${answer.content}"></p>
-                    </div>
-                    <form th:action="@{|/answers/${question.id}|}" method="post">
-                        <textarea class="form-control form-control-lg" name="content" id="content" placeholder="답변을 입력해주세요"></textarea>
-                        <div class="col-auto">
-                            <button class="btn btn-primary btn-lg enabled" id="submitButton" type="submit">답변등록</button>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org"
+        layout:decorate="~{layout}">
+    <div layout:fragment="content" class="container my-3">
+        <header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="post-heading">
+                            <h1 th:text="${question.subject}"></h1>
+                            <h2 th:text="${question.content}" class="subheading"></h2>
+                            <span class="meta">
+                                        Questioned by
+                                        <a href="#!">예진</a>
+                                        <a th:text="${#temporals.format(createDate, 'dd-MM-yyyy HH:mm')}" href="#">on</a>
+                                        <p th:text="|on ${#strings.substring(question.createDate, 2, 10)}|"></p>
+                                    </span>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </article>
-</div>
+        </header>
+        <!-- 답변 리스트 -->
+        <article class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div>
+                            <h2 class="section-heading" th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h2>
+                            <p th:each="answer : ${question.answerList}" th:text="${answer.content}"></p>
+                        </div>
+                        <form th:action="@{|/answers/${question.id}|}" method="post">
+                            <textarea class="form-control form-control-lg" name="content" id="content"
+                                      placeholder="답변을 입력해주세요"></textarea>
+                            <div class="col-auto">
+                                <button class="btn btn-primary btn-lg enabled" id="submitButton" type="submit">답변등록</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
 </html>
 
