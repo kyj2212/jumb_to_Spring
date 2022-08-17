@@ -13,6 +13,7 @@ import site.yejin.sbb.answer.service.AnswerService;
 import site.yejin.sbb.question.Question;
 import site.yejin.sbb.question.QuestionService;
 
+import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 @RequestMapping("/answers")
@@ -24,11 +25,12 @@ public class AnswerController {
     private final QuestionService questionService;
 
     @PostMapping("/{id}")
-    public String create(@PathVariable int id, Model model, AnswerCreateForm answerCreateForm, BindingResult bindingResult) {
+    public String create(@PathVariable int id, Model model, @Valid AnswerCreateForm answerCreateForm, BindingResult bindingResult) {
+        Question question= this.questionService.detail(id);
         if (bindingResult.hasErrors()) {
+            model.addAttribute("question", question);
             return "question_detail";
         }
-        Question question= this.questionService.detail(id);
         this.answerService.create(question,answerCreateForm.getContent());
         return String.format("redirect:/questions/%s",id);
     }
