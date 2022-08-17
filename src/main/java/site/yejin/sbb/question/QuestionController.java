@@ -3,8 +3,7 @@ package site.yejin.sbb.question;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +28,14 @@ public class QuestionController {
         return "question_detail";
     }
 
+    @GetMapping("/question")
+    public String create(){
+        return "question_form";
+    }
 
-
+    @PostMapping("/question")
+    public String create(@RequestParam String subject, @RequestParam String content){
+        int id = questionService.create(subject,content);
+        return "redirect:/questions/%d".formatted(id);
+    }
 }
