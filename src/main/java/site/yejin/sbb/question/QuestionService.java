@@ -21,7 +21,7 @@ public class QuestionService {
 
     public Page<Question> list(int page) {
         log.debug("int page "+page);
-        Pageable pageable = PageRequest.of(page, 10, Sort.by("CreateDate").descending());
+        Pageable pageable = PageRequest.of(page, 8, Sort.by("CreateDate").descending());
         return questionRepository.findAll(pageable);
     }
 

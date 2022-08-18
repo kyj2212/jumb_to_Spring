@@ -19,6 +19,7 @@
                 <div th:each="question, idx : ${paging}" class="col mb-5">
                     <div class="card h-100">
                         <!-- 질문 image-->
+                        <p class="mt-3 text-sm text-center" th:text="${paging.getTotalElements - (paging.number * paging.size) - idx.index}"></p>
                         <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..."/>
                         <!-- 질문 details-->
                         <div class="card-body p-4">
@@ -44,6 +45,9 @@
             </div>
             <!-- 페이징 처리 시작 -->
             <div class="pagination gx-4 gx-lg-5 justify-content-center">
+                <li class="page-item" th:classappend="${paging.isFirst eq true} ? 'disabled'">
+                    <a class="page-link " th:href="@{|/questions?page=0|}" th:text="처음"></a>
+                </li>
                 <li class="page-item" th:classappend="${paging.hasPrevious eq false} ? 'disabled'">
                     <a class="page-link " th:href="@{|/questions?page=${paging.number-1}|}" th:text="이전"></a>
                 </li>
@@ -57,9 +61,12 @@
                 <li class="page-item" th:classappend="${paging.hasNext eq false} ? 'disabled'">
                     <a class="page-link" th:href="@{|/questions?page=${paging.number+1}|}" th:text="다음"></a>
                 </li>
+                <li class="page-item" th:classappend="${paging.isLast eq true} ? 'disabled'" >
+                    <a class="page-link" th:href="@{|/questions?page=${paging.totalPages -1}|}" th:text="끝"></a>
+                </li>
             </div>
             <!-- 페이징 처리 끝 -->
-            <div class="text-center gx-4 gx-lg-5">
+            <div class="text-center gx-4 gx-lg-5 mt-5">
                 <a th:href="@{/question}" class="btn btn-primary">질문 등록하기</a>
             </div>
         </div>
