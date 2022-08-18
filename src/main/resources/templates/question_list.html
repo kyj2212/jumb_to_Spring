@@ -47,7 +47,9 @@
                 <li class="page-item" th:classappend="${paging.hasPrevious eq false} ? 'disabled'">
                     <a class="page-link " th:href="@{|/questions?page=${paging.number-1}|}" th:text="이전"></a>
                 </li>
-                <th:block th:each="page : ${#numbers.sequence(0, paging.totalPages -1)}">
+                <th:block th:each="page : ${#numbers.sequence(0, paging.totalPages -1)}"
+                    th:if="${page >= paging.number -5 and page <= paging.number +5}"
+                    >
                     <li class="page-item" th:classappend="${page eq paging.number} ? 'disabled'">
                         <a class="page-link" th:href="@{|/questions?page=${page}|}" th:text="${page+1}"></a>
                     </li>
