@@ -42,13 +42,15 @@
                     </div>
                 </div>
             </div>
+            <!-- 페이징 처리 시작 -->
             <div class="d-flex gx-4 gx-lg-5 justify-content-around">
+                <a class ="btn btn-outline-primary" th:classappend="${paging.hasPrevious eq false} ? 'disabled text-mute'" th:href="@{|/questions?page=${paging.number-1}|}" th:text="이전"></a>
                 <th:block th:each="page : ${#numbers.sequence(0, paging.totalPages -1)}">
-                    <a th:if="${page ne paging.number}" th:href="@{|/questions?page=${page}|}"
-                       th:text="${page+1}"></a>
-                    <p th:if="${page eq paging.number}" th:text="${page+1}" class="text-mute"></p>
+                    <a class ="btn btn-outline-primary" th:classappend="${page eq paging.number} ? 'disabled text-mute'" th:href="@{|/questions?page=${page}|}" th:text="${page+1}"></a>
                 </th:block>
+                <a class ="btn btn-outline-primary" th:classappend="${paging.hasNext eq false} ? 'disabled text-mute'" th:href="@{|/questions?page=${paging.number+1}|}" th:text="다음"></a>
             </div>
+            <!-- 페이징 처리 끝 -->
             <div class="text-center gx-4 gx-lg-5">
                 <a th:href="@{/question}" class="btn btn-primary">질문 등록하기</a>
             </div>
