@@ -25,7 +25,13 @@
                         <div class="card-body p-4">
                             <div class="text-center">
                                 <!-- subject-->
-                                <h5 class="fw-bolder" th:text="${question.subject}">Fancy Product</h5>
+                                <div class="d-flex justify-content-center">
+                                <h5 class="fw-bolder" th:text="${question.subject}"></h5>
+                                <span class="text-danger small ms-2"
+                                      th:if="${#lists.size(question.answerList) > 0}"
+                                      th:text="${#lists.size(question.answerList)}">
+                                </span>
+                                </div>
                                 <!-- content-->
                                 <div>
                                     <a th:href="@{|/questions/${question.id}|}"
