@@ -53,13 +53,14 @@ public class QuestionController {
         }
 
         Optional<Integer> oid;
-        Member member = memberService.findByUsername(principal.getName());
 
         try {
+            log.debug("username : "+ principal.getName());
+            log.debug("member : "+ memberService.findByUsername(principal.getName()));
             oid = questionService.create(
                     questionCreateForm.getSubject(),
                     questionCreateForm.getContent(),
-                    member
+                    memberService.findByUsername(principal.getName())
             );
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();

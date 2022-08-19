@@ -12,8 +12,7 @@
                             <h2 th:text="${question.content}" class="subheading"></h2>
                             <span class="meta">
                                         Questioned by
-                                        <a th:href="@{#!}">예진</a>
-                                        <a th:text="${#temporals.format(createDate, 'dd-MM-yyyy HH:mm')}" th:href="@{#}">on</a>
+                                        <p th:href="@{#!}" th:text="${question.author.name}"></p>
                                         <p th:text="|on ${#strings.substring(question.createDate, 2, 10)}|"></p>
                                     </span>
                         </div>
@@ -28,7 +27,11 @@
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div>
                             <h2 class="section-heading" th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h2>
-                            <p th:each="answer : ${question.answerList}" th:text="${answer.content}"></p>
+
+                            <div th:each="answer : ${question.answerList}" class="d-flex justify-content-between">
+                                <p th:text="${answer.content}"></p>
+                                <p th:text="|by ${answer.author.name}|" class="text-sm-right"></p>
+                            </div>
                         </div>
                         <form th:action="@{|/answers/${question.id}|}" th:object="${answerCreateForm}" method="post">
                             <div th:replace="form_errors :: formErrorsFragment"></div>
