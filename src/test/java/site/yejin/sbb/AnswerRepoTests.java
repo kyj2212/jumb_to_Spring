@@ -9,6 +9,10 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import site.yejin.sbb.answer.Answer;
 import site.yejin.sbb.answer.AnswerRepository;
+import site.yejin.sbb.global.exception.SignupEmailDuplicatedException;
+import site.yejin.sbb.global.exception.SignupUsernameDuplicatedException;
+import site.yejin.sbb.member.repository.MemberRepository;
+import site.yejin.sbb.member.service.MemberService;
 import site.yejin.sbb.question.Question;
 import site.yejin.sbb.question.QuestionRepository;
 
@@ -21,7 +25,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class AnswerRepoTests {
-
+    @Autowired
+    private MemberService memberService;
+    @Autowired
+    private MemberRepository memberRepository;
     @Autowired
     private QuestionRepository questionRepository;
     @Autowired
@@ -31,22 +38,23 @@ public class AnswerRepoTests {
     private int lastTestAnswerId;
 
     @BeforeEach
-    void beforeEach() {
+    void beforeEach() throws SignupUsernameDuplicatedException, SignupEmailDuplicatedException {
         clearData();
         createSampleData();
     }
     private void clearData() {
-        QuestionRepoTests.clearData(questionRepository);
-        clearData(answerRepository);
+        ClearDataUtil.clearData(memberRepository,answerRepository,questionRepository);
     }
-    public static void clearData(AnswerRepository answerRepository) {
+    public static void clearData(AnswerRepository answerRepository,QuestionRepository questionRepository) {
+        QuestionRepoTests.clearData(questionRepository);
+
         answerRepository.deleteAll(); // DELETE FROM question;
         answerRepository.truncate();
     }
 
     @Transactional
-    private void createSampleData() {
-        QuestionRepoTests.createSampleData(questionRepository);
+    private void createSampleData() throws SignupUsernameDuplicatedException, SignupEmailDuplicatedException {
+        QuestionRepoTests.createSampleData(memberService,questionRepository);
 
         Question q = questionRepository.findById(1).get();
         Answer a1 = new Answer();
