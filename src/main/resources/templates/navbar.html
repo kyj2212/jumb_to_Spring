@@ -8,9 +8,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto py-4 py-lg-0">
-                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" th:href="@{/questions}">홈</a></li>
-                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="#">로그인</a></li>
-                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="#">질문/답변</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" th:href="@{/}">홈</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" sec:authorize="isAnonymous()" th:href="@{/signup}">회원가입</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" sec:authorize="isAuthenticated()" th:href="@{/members}">회원정보</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="@{/questions}">질문/답변</a></li>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="#">Contact</a></li>
             </ul>
         </div>
