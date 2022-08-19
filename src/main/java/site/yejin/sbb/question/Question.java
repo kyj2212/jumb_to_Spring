@@ -3,6 +3,7 @@ package site.yejin.sbb.question;
 import lombok.Getter;
 import lombok.Setter;
 import site.yejin.sbb.answer.Answer;
+import site.yejin.sbb.member.entity.Member;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -30,6 +31,9 @@ public class Question {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList;
+
+    @ManyToOne
+    private Member author;
 
     public void initAnswerList() {
         if (answerList == null) {

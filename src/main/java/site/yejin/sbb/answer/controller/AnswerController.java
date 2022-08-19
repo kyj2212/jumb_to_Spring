@@ -10,11 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import site.yejin.sbb.answer.AnswerCreateForm;
 import site.yejin.sbb.answer.service.AnswerService;
+import site.yejin.sbb.member.entity.Member;
+import site.yejin.sbb.member.service.MemberService;
+import site.yejin.sbb.member.service.MemberUserDetailService;
 import site.yejin.sbb.question.Question;
 import site.yejin.sbb.question.QuestionService;
 
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
+import java.security.Principal;
 
 @RequestMapping("/answers")
 @Controller
@@ -24,13 +28,15 @@ public class AnswerController {
     private final AnswerService answerService;
     private final QuestionService questionService;
 
+    private final MemberService memberService;
     @PostMapping("/{id}")
-    public String create(@PathVariable int id, Model model, @Valid AnswerCreateForm answerCreateForm, BindingResult bindingResult) {
+    public String create(@PathVariable int id, Model model, @Valid AnswerCreateForm answerCreateForm, BindingResult bindingResult, Principal principal) {
         Question question= this.questionService.detail(id);
         if (bindingResult.hasErrors()) {
             return "question_detail";
         }
-        this.answerService.create(question,answerCreateForm.getContent());
+        Member member = memberService.findByUsername(principal.getName());
+        this.answerService.create(question,answerCreateForm.getContent(), member);
         return String.format("redirect:/questions/%s",id);
     }
 

@@ -9,8 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import site.yejin.sbb.answer.AnswerCreateForm;
+import site.yejin.sbb.member.entity.Member;
+import site.yejin.sbb.member.service.MemberService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 public class QuestionController {
     //@Autowired // 필드 주입
     private final QuestionService questionService;
+    private final MemberService memberService;
 
     @RequestMapping("/questions")
     public String list(Model model, @RequestParam(defaultValue = "0") int page) {
@@ -42,21 +46,20 @@ public class QuestionController {
     }
 
     @PostMapping("/question")
-    public String create(@Valid QuestionCreateForm questionCreateForm, BindingResult bindingResult){
-        log.debug("questionForm : "+questionCreateForm);
-        log.debug("subejct : "+questionCreateForm.getSubject());
-        log.debug("content : "+questionCreateForm.getContent());
+    public String create(@Valid QuestionCreateForm questionCreateForm, BindingResult bindingResult, Principal principal){
 
         if (bindingResult.hasErrors()) {
             return "question_form";
         }
 
         Optional<Integer> oid;
+        Member member = memberService.findByUsername(principal.getName());
 
         try {
             oid = questionService.create(
                     questionCreateForm.getSubject(),
-                    questionCreateForm.getContent()
+                    questionCreateForm.getContent(),
+                    member
             );
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();

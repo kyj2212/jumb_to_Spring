@@ -2,6 +2,7 @@ package site.yejin.sbb.answer;
 
 import lombok.Getter;
 import lombok.Setter;
+import site.yejin.sbb.member.entity.Member;
 import site.yejin.sbb.question.Question;
 
 import javax.persistence.*;
@@ -23,4 +24,7 @@ public class Answer {
     @ManyToOne
     //@JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Question question;
+
+    @ManyToOne
+    private Member author;
 }

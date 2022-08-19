@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import site.yejin.sbb.answer.Answer;
 import site.yejin.sbb.answer.AnswerRepository;
 import site.yejin.sbb.global.exception.DataNotFoundException;
+import site.yejin.sbb.member.entity.Member;
 import site.yejin.sbb.question.Question;
 import site.yejin.sbb.question.QuestionRepository;
 
@@ -16,12 +17,13 @@ public class AnswerService {
     @Autowired
     private AnswerRepository answerRepository;
 
-    public void create(Question question, String content) {
+    public void create(Question question, String content, Member author) {
         Answer answer = new Answer();
         answer.setContent(content);
         answer.setQuestion(question);
         answer.setCreateDate(LocalDateTime.now());
         question.addAnswer(answer);
+        answer.setAuthor(author);
         this.answerRepository.save(answer);
     }
 }

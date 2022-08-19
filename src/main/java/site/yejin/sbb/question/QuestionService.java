@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import site.yejin.sbb.global.exception.DataNotFoundException;
+import site.yejin.sbb.member.entity.Member;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -30,13 +31,14 @@ public class QuestionService {
                 .orElseThrow(()-> new DataNotFoundException("%d question not found".formatted(id)));
     }
 
-    public Optional<Integer> create(String subject, String content) {
+    public Optional<Integer> create(String subject, String content, Member author) {
         Question question = new Question();
         question.setSubject(subject);
         question.setContent(content);
         question.setCreateDate(LocalDateTime.now());
         question.initAnswerList();
         questionRepository.save(question);
+        question.setAuthor(author);
         return Optional.ofNullable(question.getId());
     }
 }
