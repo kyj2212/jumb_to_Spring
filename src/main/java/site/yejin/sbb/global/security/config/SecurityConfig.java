@@ -19,7 +19,7 @@ import site.yejin.sbb.member.service.MemberUserDetailService;
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     /* 인가 구분을 위한 url path 지정 */

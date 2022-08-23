@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,11 +41,13 @@ public class QuestionController {
         return "question_detail";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/question")
     public String create(QuestionCreateForm questionCreateForm){
         return "question_form";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/question")
     public String create(@Valid QuestionCreateForm questionCreateForm, BindingResult bindingResult, Principal principal){
 

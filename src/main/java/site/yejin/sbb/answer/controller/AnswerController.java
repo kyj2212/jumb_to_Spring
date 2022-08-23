@@ -1,6 +1,7 @@
 package site.yejin.sbb.answer.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +31,7 @@ public class AnswerController {
 
     private final MemberService memberService;
     @PostMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public String create(@PathVariable int id, Model model, @Valid AnswerCreateForm answerCreateForm, BindingResult bindingResult, Principal principal) {
         Question question= this.questionService.detail(id);
         if (bindingResult.hasErrors()) {
