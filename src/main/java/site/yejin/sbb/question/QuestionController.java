@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import site.yejin.sbb.answer.AnswerCreateForm;
 import site.yejin.sbb.member.entity.Member;
 import site.yejin.sbb.member.service.MemberService;
+import site.yejin.sbb.question.dto.QuestionUpdateForm;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -35,15 +36,15 @@ public class QuestionController {
     }
 
     @RequestMapping("/questions/{id}")
-    public String detail(@PathVariable int id, Model model, AnswerCreateForm answerCreateForm){
-        Question question = questionService.detail(id);
+    public String show(@PathVariable int id, Model model, AnswerCreateForm answerCreateForm){
+        Question question = questionService.findById(id);
         model.addAttribute("question",question);
         return "question_detail";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/questions/new")
-    public String create(QuestionCreateForm questionCreateForm){
+    public String newQuestion(QuestionCreateForm questionCreateForm){
         return "question_form";
     }
 
@@ -84,6 +85,56 @@ public class QuestionController {
         return "redirect:/questions/%d".formatted(id);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/questions/{id}/edit")
+    public String edit(@PathVariable Integer id, QuestionUpdateForm questionUpdateForm, Model model){
+        Question question=questionService.findById(id);
+        questionUpdateForm.setSubject(question.getSubject());
+        questionUpdateForm.setContent(question.getContent());
+        model.addAttribute("question",question);
+        return "question_update_form";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/questions/{id}")
+    public String update(@PathVariable Integer id, @Valid @ModelAttribute("questionUpdateForm") QuestionUpdateForm questionUpdateForm, BindingResult bindingResult, Principal principal, Model model){
+        Question question=questionService.findById(id);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("question",question);
+            return "question_update_form";
+        }
+
+        Optional<Integer> oid;
+
+        try {
+            log.debug("username : "+ principal.getName());
+            log.debug("member : "+ memberService.findByUsername(principal.getName()));
+            oid = questionService.update(
+                    question,
+                    questionUpdateForm.getSubject(),
+                    questionUpdateForm.getContent(),
+                    memberService.findByUsername(principal.getName())
+            );
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            bindingResult.reject("updateQuestionFailed", "이미 등록된 질문입니다.");
+            model.addAttribute("question",question);
+            return "question_update_form";
+        } catch (Exception e) {
+            e.printStackTrace();
+            bindingResult.reject("updateQuestionFailed", e.getMessage());
+            model.addAttribute("question",question);
+            return "question_update_form";
+        }
+
+        return "redirect:/questions/%d".formatted(id);
+    }
+
+    @DeleteMapping("/questions/{id}")
+    public String delete(@PathVariable Integer id){
+        questionService.delete(id);
+        return "redirect:/logout";
+    }
 
 
 }

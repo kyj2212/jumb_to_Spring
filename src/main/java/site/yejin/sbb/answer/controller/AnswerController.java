@@ -33,7 +33,7 @@ public class AnswerController {
     @PostMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     public String create(@PathVariable int id, Model model, @Valid AnswerCreateForm answerCreateForm, BindingResult bindingResult, Principal principal) {
-        Question question= this.questionService.detail(id);
+        Question question= this.questionService.findById(id);
         if (bindingResult.hasErrors()) {
             model.addAttribute("question", question);
             return "question_detail";

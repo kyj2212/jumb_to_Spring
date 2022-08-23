@@ -26,7 +26,7 @@ public class QuestionService {
         return questionRepository.findAll(pageable);
     }
 
-    public Question detail(int id) {
+    public Question findById(int id) {
         return this.questionRepository.findById(id)
                 .orElseThrow(()-> new DataNotFoundException("%d question not found".formatted(id)));
     }
@@ -41,5 +41,20 @@ public class QuestionService {
         question.setAuthor(author);
         questionRepository.save(question);
         return Optional.ofNullable(question.getId());
+    }
+    public Optional<Integer> update(Question question, String subject, String content, Member author) {
+        if(!question.getSubject().equals(subject)) {
+            question.setSubject(subject);
+        }
+        if(!question.getContent().equals(content)){
+            question.setContent(content);
+        }
+        question.setModifyDate(LocalDateTime.now());
+        questionRepository.save(question);
+        return Optional.ofNullable(question.getId());
+    }
+
+    public void delete(Integer id) {
+        questionRepository.delete(findById(id));
     }
 }
