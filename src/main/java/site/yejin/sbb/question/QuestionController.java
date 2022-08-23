@@ -42,13 +42,13 @@ public class QuestionController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/question")
+    @GetMapping("/questions/new")
     public String create(QuestionCreateForm questionCreateForm){
         return "question_form";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/question")
+    @PostMapping("/questions")
     public String create(@Valid QuestionCreateForm questionCreateForm, BindingResult bindingResult, Principal principal){
 
         if (bindingResult.hasErrors()) {
