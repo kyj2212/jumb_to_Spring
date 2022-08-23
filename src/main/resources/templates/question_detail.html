@@ -33,7 +33,7 @@
                                 <p th:text="|by ${answer.author.name}|" class="text-sm-right"></p>
                             </div>
                         </div>
-                        <form th:action="@{|/answers/${question.id}|}" th:object="${answerCreateForm}" method="post">
+                        <form  sec:authorize="isAuthenticated()" th:action="@{|/answers/${question.id}|}" th:object="${answerCreateForm}" method="post">
                             <div th:replace="form_errors :: formErrorsFragment"></div>
                             <textarea class="form-control form-control-lg" name="content" id="content"
                                       placeholder="답변을 입력해주세요"></textarea>

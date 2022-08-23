@@ -37,6 +37,8 @@
                                     <a th:href="@{|/questions/${question.id}|}"
                                        th:text="${question.content}">Content</a>
                                 </div>
+                                <!-- author -->
+                                <p th:text="|by ${question.author.name}|"></p>
                                 <!-- createDate -->
                                 <p th:text="|Date. ${#strings.substring(question.createDate, 2, 16)}|"></p>
                             </div>

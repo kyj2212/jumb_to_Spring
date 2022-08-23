@@ -36,6 +36,7 @@ public class QuestionService {
         question.setSubject(subject);
         question.setContent(content);
         question.setCreateDate(LocalDateTime.now());
+        question.setModifyDate(LocalDateTime.now());
         question.initAnswerList();
         question.setAuthor(author);
         questionRepository.save(question);

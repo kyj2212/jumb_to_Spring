@@ -30,14 +30,17 @@ public class SecurityConfig {
             "/error/**"}; // 정적 파일 인가 없이 모두 허용
     private static final String[] AUTH_ALL_LIST = {
             "/singup/**",
-            "/login/**"}; // 모두 허용
+            "/login/**",
+            "/questions/**"
+    }; // 모두 허용
     private static final String[] AUTH_ADMIN_LIST = {
-            "/admin/**"}; // admin 롤 만 허용
+            "/admin/**"
+    }; // admin 롤 만 허용
     private static final String[] AUTH_AUTHENTICATED_LIST = {
             "/members/**",
             "/answers/**",
-            "/questions/**",
-            "/question/**"}; // 인가 필요
+            "/question/**"
+    }; // 인가 필요
 
     private final MemberUserDetailService customUserDetailsService;
    // private final AuthenticationFailureHandler customFailureHandler;
