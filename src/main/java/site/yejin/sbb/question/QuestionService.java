@@ -25,7 +25,24 @@ public class QuestionService {
         Pageable pageable = PageRequest.of(page, 8, Sort.by("CreateDate").descending());
         return questionRepository.findAll(pageable);
     }
-
+    public Page<Question> findBySubjectContainsOrContentContains(String subject, String content, int page) {
+        log.debug("int page "+page);
+        Pageable pageable = PageRequest.of(page, 8, Sort.by("CreateDate").descending());
+        return questionRepository.findBySubjectContainsOrContentContains(subject,content,pageable);
+    }
+    public Page<Question> findBySubjectContainsOrContentContainsOrAuthor_nameContains(String subject, String content, String name, int page) {
+        log.debug("int page "+page);
+        Pageable pageable = PageRequest.of(page, 8, Sort.by("CreateDate").descending());
+        return questionRepository.findBySubjectContainsOrContentContainsOrAuthor_nameContains(subject,content,name,pageable);
+    }
+    public Question findByAnswerList_contentContains(String answer) {
+        return questionRepository.findByAnswerList_contentContains(answer);
+    }
+    public Page<Question> findBySubjectContainsOrContentContainsOrAuthor_nameContainsOrAnswerList_contentContains(String subject, String content, String name, String answer, int page) {
+        log.debug("int page "+page);
+        Pageable pageable = PageRequest.of(page, 8, Sort.by("CreateDate").descending());
+        return questionRepository.findBySubjectContainsOrContentContainsOrAuthor_nameContainsOrAnswerList_contentContains(subject,content,name,answer,pageable);
+    }
     public Question findById(int id) {
         return this.questionRepository.findById(id)
                 .orElseThrow(()-> new DataNotFoundException("%d question not found".formatted(id)));
@@ -57,4 +74,7 @@ public class QuestionService {
     public void delete(Integer id) {
         questionRepository.delete(findById(id));
     }
+
+
+
 }

@@ -29,8 +29,13 @@ public class QuestionController {
     private final MemberService memberService;
 
     @RequestMapping("/questions")
-    public String list(Model model, @RequestParam(defaultValue = "0") int page) {
-        Page<Question> paging = questionService.list(page);
+    public String list(Model model,
+                       @RequestParam(defaultValue = "0") int page,
+                       @RequestParam(defaultValue = "") String subject,
+                       @RequestParam(defaultValue = "") String content,
+                       @RequestParam(defaultValue = "") String name,
+                       @RequestParam(defaultValue = "") String answer) {
+        Page<Question> paging = questionService.findBySubjectContainsOrContentContainsOrAuthor_nameContainsOrAnswerList_contentContains(subject, content, name, answer,page);
         model.addAttribute("paging",paging);
         return "question_list";
     }

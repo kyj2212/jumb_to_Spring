@@ -47,5 +47,12 @@ public interface QuestionRepository extends JpaRepository<Question,Integer> , Re
     public List<Question> findByUserId(String subject);
 
 
+    Page<Question> findBySubjectContainsOrContentContains(String subject, String content, Pageable pageable);
+
+    Page<Question> findBySubjectContainsOrContentContainsOrAuthor_nameContains(String subject, String content, String name, Pageable pageable);
+
+    Question findByAnswerList_contentContains(String answer);
+
+    Page<Question> findBySubjectContainsOrContentContainsOrAuthor_nameContainsOrAnswerList_contentContains(String subject, String content, String name, String answer, Pageable pageable);
 
 }
