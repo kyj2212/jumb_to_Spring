@@ -10,15 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import site.yejin.sbb.answer.AnswerCreateForm;
-import site.yejin.sbb.member.entity.Member;
 import site.yejin.sbb.member.service.MemberService;
 import site.yejin.sbb.question.dto.QuestionUpdateForm;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -145,7 +142,7 @@ public class QuestionController {
     @DeleteMapping("/questions/{id}")
     public String delete(@PathVariable Integer id){
         questionService.delete(id);
-        return "redirect:/logout";
+        return "redirect:/questions";
     }
 
 

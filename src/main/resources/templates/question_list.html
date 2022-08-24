@@ -45,8 +45,16 @@
                         </div>
                         <!-- question actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{|/questions/${question.id}/edit|}">수정</a></div>
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{#}">삭제</a></div>
+                            <div class="text-center">
+                                <a class="btn btn-outline-dark mt-auto" sec:authorize="isAuthenticated()"
+                                   th:if="${#authentication.getPrincipal().getUsername()} == ${question.author.username}" th:href="@{|/questions/${question.id}/edit|}">질문수정</a>
+                            </div>
+                            <div sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername()} == ${question.author.username}" class="text-center">
+                                <form th:action="@{|/questions/${question.id}|}" method="post">
+                                    <input type="hidden" name="_method" value="delete"/>
+                                    <button class="btn btn-outline-dark mt-auto">삭제</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
