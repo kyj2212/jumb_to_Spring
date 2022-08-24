@@ -54,5 +54,6 @@ public interface QuestionRepository extends JpaRepository<Question,Integer> , Re
     Question findByAnswerList_contentContains(String answer);
 
     Page<Question> findBySubjectContainsOrContentContainsOrAuthor_nameContainsOrAnswerList_contentContains(String subject, String content, String name, String answer, Pageable pageable);
+    Page<Question> findDistinctBySubjectContainsOrContentContainsOrAuthor_nameContainsOrAnswerList_contentContains(String subject, String content, String name, String answer, Pageable pageable);
 
 }

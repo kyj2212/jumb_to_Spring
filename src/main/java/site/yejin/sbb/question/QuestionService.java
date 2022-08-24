@@ -43,6 +43,11 @@ public class QuestionService {
         Pageable pageable = PageRequest.of(page, 8, Sort.by("CreateDate").descending());
         return questionRepository.findBySubjectContainsOrContentContainsOrAuthor_nameContainsOrAnswerList_contentContains(subject,content,name,answer,pageable);
     }
+    public Page<Question> findDistinctBySubjectContainsOrContentContainsOrAuthor_nameContainsOrAnswerList_contentContains(String subject, String content, String name, String answer, int page) {
+        log.debug("int page "+page);
+        Pageable pageable = PageRequest.of(page, 8, Sort.by("CreateDate").descending());
+        return questionRepository.findDistinctBySubjectContainsOrContentContainsOrAuthor_nameContainsOrAnswerList_contentContains(subject,content,name,answer,pageable);
+    }
     public Question findById(int id) {
         return this.questionRepository.findById(id)
                 .orElseThrow(()-> new DataNotFoundException("%d question not found".formatted(id)));
