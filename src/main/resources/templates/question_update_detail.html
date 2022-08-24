@@ -42,15 +42,15 @@
                         <div>
                             <h2 class="mb-10 border-bottom border-dark section-heading" th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h2>
 
-                            <div th:each="answer : ${question.answerList}" class="mt-10 d-flex">
+                            <div th:each="a : ${question.answerList}" class="mt-10 d-flex">
                                 <div class="mr-20">
-                                    <h3 th:text="${answer.content}" class="text-lg"></h3>
+                                    <h3 th:text="${a.content}" class="text-lg"></h3>
                                 </div>
-                                <p th:text="|by ${answer.author.name}|" class="font-italic text-sm-right"></p>
+                                <p th:text="|by ${a.author.name}|" class="font-italic text-sm-right"></p>
                                 <div class="col-auto d-flex p-2">
-                                    <th:block class="text-center" sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername() == answer.author.username}">
-                                        <a class="btn btn-outline-dark mt-auto" th:href="@{|/answers/${answer.id}/edit|}">수정</a>
-                                        <form th:action="@{|/answers/${answer.id}|}" method="post">
+                                    <th:block class="text-center" sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername() == a.author.username}">
+                                        <a class="btn btn-outline-dark mt-auto" th:href="@{|/answers/${a.id}/edit|}">수정</a>
+                                        <form th:action="@{|/answers/${a.id}|}" method="post">
                                             <input type="hidden" name="_method" value="delete"/>
                                             <button class="btn btn-outline-dark btn-sm mt-auto mx-2">삭제</button>
                                         </form>
@@ -58,11 +58,11 @@
                                 </div>
                             </div>
                         </div>
-                        <form sec:authorize="isAuthenticated()" th:action="@{|/answers/${question.id}|}" th:object="${answerCreateForm}" method="post">
-                            <div th:replace="form_errors :: formErrorsFragment"></div>
-                            <textarea class="form-control form-control-lg" name="content" id="content"
+                        <form sec:authorize="isAuthenticated()" th:action="@{|/answers/${answer.id}|}" th:object="${answerCreateForm}" method="post">
+                            <input type="hidden" name="_method" value="put"/>
+                            <textarea class="form-control form-control-lg" th:field="*{content}"
                                       placeholder="답변을 입력해주세요"></textarea>
-                            <button class="btn btn-primary btn-lg enabled" id="submitButton" type="submit">작성</button>
+                            <button class="btn btn-outline-dark btn-sm mt-auto mx-2">수정</button>
                         </form>
                     </div>
                 </div>

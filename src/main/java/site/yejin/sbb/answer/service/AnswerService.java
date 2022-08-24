@@ -7,11 +7,9 @@ import site.yejin.sbb.answer.AnswerRepository;
 import site.yejin.sbb.global.exception.DataNotFoundException;
 import site.yejin.sbb.member.entity.Member;
 import site.yejin.sbb.question.Question;
-import site.yejin.sbb.question.QuestionRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+
 @Service
 public class AnswerService {
     @Autowired
@@ -26,5 +24,21 @@ public class AnswerService {
         question.addAnswer(answer);
         answer.setAuthor(author);
         this.answerRepository.save(answer);
+    }
+
+    public void delete(Answer answer) {
+        answerRepository.delete(answer);
+    }
+
+    public Answer findById(Integer id) {
+        return answerRepository.findById(id).orElseThrow(() -> new DataNotFoundException("%d answer not found".formatted(id)));
+    }
+
+    public void update(Answer answer, String content) {
+        if(!answer.getContent().equals(content)){
+            answer.setContent(content);
+        }
+        answer.setModifyDate(LocalDateTime.now());
+        answerRepository.save(answer);
     }
 }

@@ -19,17 +19,18 @@
                 <div th:each="question, idx : ${paging}" class="col mb-5">
                     <div class="card h-100">
                         <!-- 질문 image-->
-                        <p class="mt-3 text-sm text-center" th:text="${paging.getTotalElements - (paging.number * paging.size) - idx.index}"></p>
+                        <p class="mt-3 text-sm text-center"
+                           th:text="${paging.getTotalElements - (paging.number * paging.size) - idx.index}"></p>
                         <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..."/>
                         <!-- 질문 details-->
                         <div class="card-body p-4">
                             <div class="text-center">
                                 <!-- subject-->
                                 <div class="d-flex justify-content-center">
-                                <h5 class="fw-bolder" th:text="${question.subject}"></h5>
-                                <span class="text-danger small ms-2"
-                                      th:if="${#lists.size(question.answerList) > 0}"
-                                      th:text="${#lists.size(question.answerList)}">
+                                    <h5 class="fw-bolder" th:text="${question.subject}"></h5>
+                                    <span class="text-danger small ms-2"
+                                          th:if="${#lists.size(question.answerList) > 0}"
+                                          th:text="${#lists.size(question.answerList)}">
                                 </span>
                                 </div>
                                 <!-- content-->
@@ -45,16 +46,17 @@
                         </div>
                         <!-- question actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center">
-                                <a class="btn btn-outline-dark mt-auto" sec:authorize="isAuthenticated()"
-                                   th:if="${#authentication.getPrincipal().getUsername()} == ${question.author.username}" th:href="@{|/questions/${question.id}/edit|}">질문수정</a>
-                            </div>
-                            <div sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername()} == ${question.author.username}" class="text-center">
-                                <form th:action="@{|/questions/${question.id}|}" method="post">
-                                    <input type="hidden" name="_method" value="delete"/>
-                                    <button class="btn btn-outline-dark mt-auto">삭제</button>
-                                </form>
-                            </div>
+                            <th:block sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername() == question.author.username}   ">
+                                <div class="text-center">
+                                    <a class="btn btn-outline-dark mt-auto" th:href="@{|/questions/${question.id}/edit|}">수정</a>
+                                </div>
+                                <div class="text-center">
+                                    <form th:action="@{|/questions/${question.id}|}" method="post">
+                                        <input type="hidden" name="_method" value="delete"/>
+                                        <button class="btn btn-outline-dark mt-auto">삭제</button>
+                                    </form>
+                                </div>
+                            </th:block>
                         </div>
                     </div>
                 </div>
@@ -68,8 +70,8 @@
                     <a class="page-link " th:href="@{|/questions?page=${paging.number-1}|}" th:text="이전"></a>
                 </li>
                 <th:block th:each="page : ${#numbers.sequence(0, paging.totalPages -1)}"
-                    th:if="${page >= paging.number -5 and page <= paging.number +5}"
-                    >
+                          th:if="${page >= paging.number -5 and page <= paging.number +5}"
+                >
                     <li class="page-item" th:classappend="${page eq paging.number} ? 'disabled'">
                         <a class="page-link" th:href="@{|/questions?page=${page}|}" th:text="${page+1}"></a>
                     </li>
@@ -77,7 +79,7 @@
                 <li class="page-item" th:classappend="${paging.hasNext eq false} ? 'disabled'">
                     <a class="page-link" th:href="@{|/questions?page=${paging.number+1}|}" th:text="다음"></a>
                 </li>
-                <li class="page-item" th:classappend="${paging.isLast eq true} ? 'disabled'" >
+                <li class="page-item" th:classappend="${paging.isLast eq true} ? 'disabled'">
                     <a class="page-link" th:href="@{|/questions?page=${paging.totalPages -1}|}" th:text="끝"></a>
                 </li>
             </div>
