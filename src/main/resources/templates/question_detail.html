@@ -13,7 +13,10 @@
                             <span class="meta">
                                         Questioned by
                                         <p th:href="@{#!}" th:text="${question.author.name}"></p>
-                                        <p th:text="|on ${#strings.substring(question.createDate, 2, 10)}|"></p>
+<!--                                        <p th:text="|on ${#strings.substring(question.createDate, 2, 10)}|"></p>-->
+                                        <p th:text="|created at ${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}|"></p>
+                                        <th:block th:if="${question.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                                        <p th:text="|modified at ${#temporals.format(question.modifyDate, 'yyyy-MM-dd HH:mm')}|"></p></th:block>
                                     </span>
                             <div sec:authorize="isAuthenticated()" th:if="${isAuthor}==true" class="bottombtn_box">
                                 <form id="deleteMember" th:action="@{|/questions/${question.id}|}" method="post">
