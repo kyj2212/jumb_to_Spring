@@ -44,8 +44,11 @@ public class QuestionController {
     public String show(@PathVariable int id, Model model, AnswerCreateForm answerCreateForm, Principal principal){
         Question question = questionService.findById(id);
         model.addAttribute("question",question);
-        boolean isAuthor = question.getAuthor().getUsername().equals(principal.getName());
-        log.debug("작성자 ID: "+question.getAuthor().getUsername()+" 로그인 유저 ID: "+ principal.getName());
+        boolean isAuthor = false;
+        if(principal != null){
+         isAuthor = question.getAuthor().getUsername().equals(principal.getName());
+            log.debug("작성자 ID: "+question.getAuthor().getUsername()+" 로그인 유저 ID: "+ principal.getName());
+        }
         log.debug("isAuthor : "+isAuthor);
         model.addAttribute("isAuthor",isAuthor);
         return "question_detail";

@@ -15,8 +15,8 @@
                                         <p th:href="@{#!}" th:text="${question.author.name}"></p>
                                         <p th:text="|on ${#strings.substring(question.createDate, 2, 10)}|"></p>
                                     </span>
-                            <a class="btn btn-primary btn-lg enabled" th:if="${isAuthor}==true" th:href="@{|/questions/${question.id}/edit|}">질문수정</a>
-                            <div th:if="${isAuthor}==true" class="bottombtn_box">
+                            <a class="btn btn-primary btn-lg enabled" sec:authorize="isAuthenticated()" th:if="${isAuthor}==true" th:href="@{|/questions/${question.id}/edit|}">질문수정</a>
+                            <div sec:authorize="isAuthenticated()" th:if="${isAuthor}==true" class="bottombtn_box">
                                 <form id="deleteMember" th:action="@{|/questions/${question.id}|}" method="post">
                                     <input type="hidden" name="_method" value="delete"/>
                                     <button class="btn btn-primary btn-lg enabled" id="delete-btn">질문삭제</button>
