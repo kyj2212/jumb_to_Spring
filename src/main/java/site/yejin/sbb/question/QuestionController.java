@@ -15,6 +15,8 @@ import site.yejin.sbb.question.dto.QuestionUpdateForm;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -34,6 +36,12 @@ public class QuestionController {
                        @RequestParam(defaultValue = "") String answer) {
         Page<Question> paging = questionService.findDistinctBySubjectContainsOrContentContainsOrAuthor_nameContainsOrAnswerList_contentContains(subject, content, name, answer,page);
         model.addAttribute("paging",paging);
+        Map<String,String> param = new HashMap<>();
+        param.put("subject",subject);
+        param.put("content",content);
+        param.put("name",subject);
+        param.put("answer",subject);
+        model.addAttribute("param",param);
         return "question_list";
     }
 
